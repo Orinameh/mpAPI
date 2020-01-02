@@ -13,4 +13,4 @@ class JsonWebToken
     end
 end
 
-# autoload this to the application.rb file
+# eager_load this in the application.rb file so that it can be available anywhere in the project
