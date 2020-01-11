@@ -6,4 +6,14 @@ class ProductTest < ActiveSupport::TestCase
     product.price = -1
     assert_not product.valid?
   end
+
+  test 'should filter products by name' do
+    assert_equal 2, Product.filter_by_title('TV').count
+  end
+
+  test 'should filter products by name and sort them' do
+    assert_equal [products(:another_tv), products(:one)],
+    Product.filter_by_title('TV').sort
+  end
+
 end
