@@ -16,6 +16,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     json_response = JSON.parse(self.response.body, symbolize_names: true)
     assert_equal @user.email, json_response.dig(:data, :attributes, :email)
     assert_equal @user.products.first.id.to_s, json_response.dig(:data, :relationships, :products, :data, 0, :id)
+    assert_equal @user.products.first.title, json_response.dig(:included, 0, :attributes, :title)
   end
 
 
