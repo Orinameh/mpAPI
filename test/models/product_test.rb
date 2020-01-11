@@ -16,4 +16,19 @@ class ProductTest < ActiveSupport::TestCase
     Product.filter_by_title('TV').sort
   end
 
+  test 'should filter products by price and sort them' do 
+    assert_equal [products(:two), products(:one)], Product.above_or_equal_to_price(200).sort 
+  end
+  test 'should filter products below price and sort them' do
+    assert_equal [products(:another_tv)], Product.below_or_equal_to_price(200).sort
+  end
+
+  test 'should sort product by most recent' do
+    # we will touch some products to update them 
+    products(:two).touch #updates updated_at or the attribute passed to touch
+    products(:one)
+    assert_equal [products(:another_tv), products(:one), products(:two)], Product.recent.to_a
+  end
+    
+
 end
