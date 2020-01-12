@@ -46,7 +46,7 @@ class Api::V1::ProductsController < ApplicationController
     end
 
     def check_owner
-        head :forbidden unless @product.user.id == current_user&.id
+        head :forbidden unless @product.user_id == current_user&.id
     end
 
     def set_product
