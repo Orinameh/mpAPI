@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   validates :price, numericality: { greater_than_or_equal_to: 0}, presence: true
   belongs_to :user
 
+  # placement is the table that contains order_id and product_id (many to many relationships)
   has_many :placements, dependent: :destroy
   has_many :orders, through: :placements
 
