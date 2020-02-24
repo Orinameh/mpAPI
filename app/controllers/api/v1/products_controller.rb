@@ -1,4 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
+    include Paginable
     before_action :set_product, only: %i[show update destroy]
     # check_login is in concerns/authenticable
     before_action :check_login, only: %i[create]
@@ -6,8 +7,16 @@ class Api::V1::ProductsController < ApplicationController
     
     def index
         # @products = Product.all
-        @products = Product.search(params)
-        render json: ProductSerializer.new(@products).serializable_hash
+        @products = Product.page(params[:page]).per(params[:per_page]).search(params)
+        options = {
+            links: {
+                first: api_v1_products_path(page: 1),
+                last: api_v1_products_path(page: @products.total_pages), 
+                prev: api_v1_products_path(page: @products.prev_page), 
+                next: api_v1_products_path(page: @products.next_page),
+            } 
+        }
+        render json: ProductSerializer.new(@products, options).serializable_hash
     end
 
     def show
